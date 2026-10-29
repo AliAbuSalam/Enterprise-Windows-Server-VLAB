@@ -10,3 +10,8 @@ This project documents the design and deployment of an Enterprise Active Directo
 * **Real-World Troubleshooting:** Identify, resolve, and document practical problems that could occur when managing Windows Servers.
 * **Operational Documentation:** Maintain technical documentation for easier troubleshooting in the future.
 
+## Environment & Architecture
+
+### Infrastructure Overview
+* **Hypervisor:** Oracle VM VirtualBox
+* **Subnet:** 192.168.50.0/24
