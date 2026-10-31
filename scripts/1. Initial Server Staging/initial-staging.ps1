@@ -14,7 +14,10 @@ $configFile.Hostname
 Rename-Computer $configFile.Hostname
 
 #Set new IPAddress, prefixLength, and default gateway for the device
-New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress $configFile.IPAddress -PrefixLength $configFile.prefixLength -DefaultGateway $configFile.defaultGateway
+New-NetIPAddress -InterfaceAlias "Ethernet" `
+  -IPAddress $configFile.IPAddress `
+  -PrefixLength $configFile.prefixLength `
+  -DefaultGateway $configFile.defaultGateway
 
 #Set new DNSServer for the device
 Set-DNSClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses $configFile.DNSServer
