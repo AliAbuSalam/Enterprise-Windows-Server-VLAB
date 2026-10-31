@@ -5,10 +5,9 @@ $configFile = Get-Content $configFilePath | ConvertFrom-Json
 $configFile.Hostname
 Rename-Computer $configFile.Hostname
 
-#Checking whether the device has ethernet connection
-$ethernetInterfaces = Get-NetIPInterface | Select-Object -Property InterfaceAlias | Select-String -Pattern "Ethernet" | Measure-Object
-$numberOfEthernet = $ethernetInterfaces.Count
-if($numberOfEthernet -le 0) {
+#Checks whether the device has ethernet connection
+$ethernetInterfaces = Get-NetAdapter "Ethernet" -ErrorAction SilentlyContinue
+if($null -eq $ethernetInterfaces) {
   Write-Error -Message "Can't detect any ethernet connection. Make sure the device has ethernet connection."
   Pause
   Return
