@@ -1,10 +1,6 @@
 $configFilePath = Join-Path -Path $PSScriptRoot -ChildPath "initial-staging-config.json"
 $configFile = Get-Content $configFilePath | ConvertFrom-Json
 
-#renaming pc to $ConfigFile.Hostname
-$configFile.Hostname
-Rename-Computer $configFile.Hostname
-
 #Checks whether the device has ethernet connection
 $ethernetInterfaces = Get-NetAdapter "Ethernet" -ErrorAction SilentlyContinue
 if($null -eq $ethernetInterfaces) {
@@ -12,6 +8,10 @@ if($null -eq $ethernetInterfaces) {
   Pause
   Return
 }
+
+#renaming pc to $ConfigFile.Hostname
+$configFile.Hostname
+Rename-Computer $configFile.Hostname
 
 #Set new IPAddress, prefixLength, and default gateway for the device
 New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress $configFile.IPAddress -PrefixLength $configFile.prefixLength -DefaultGateway $configFile.defaultGateway
