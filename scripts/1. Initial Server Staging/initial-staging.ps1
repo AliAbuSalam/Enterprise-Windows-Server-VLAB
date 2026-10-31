@@ -11,7 +11,7 @@ $numberOfEthernet = $ethernetInterfaces.Count
 if($numberOfEthernet -le 0) {
   Write-Error -Message "Can't detect any ethernet connection. Make sure the device has ethernet connection."
   Pause
-  Exit-PSHostProcess
+  Return
 }
 
 #Set new IPAddress, prefixLength, and default gateway for the device
