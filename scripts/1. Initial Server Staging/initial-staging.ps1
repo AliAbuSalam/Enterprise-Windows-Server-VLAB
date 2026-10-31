@@ -1,4 +1,4 @@
-$configFilePath = Join-Path -Path $PWD.path -ChildPath "initial-staging-config.json"
+$configFilePath = Join-Path -Path $PSScriptRoot -ChildPath "initial-staging-config.json"
 $configFile = Get-Content $configFilePath | ConvertFrom-Json
 
 #renaming pc to $ConfigFile.Hostname
