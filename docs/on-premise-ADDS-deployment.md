@@ -12,8 +12,7 @@ By default, this documentation assumes the baseline values as follow:
   "Hostname": "DC01",
   "IPAddress": "192.168.50.10",
   "PrefixLength": 24,
-  "defaultGateway": "192.168.50.1",
-  "DNSServer": "127.0.0.1"
+  "defaultGateway": "192.168.50.1"
 }
 ```
 The values above will also be used on subsequent documentations unless stated otherwise.
