@@ -20,7 +20,7 @@ New-NetIPAddress -InterfaceAlias "Ethernet" `
   -DefaultGateway $configFile.defaultGateway
 
 #Set new DNSServer for the device
-Set-DNSClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses $configFile.DNSServer
+Set-DNSClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses "127.0.0.1"
 Write-Host "The script has finished. The computer will restart to finalize change."
 Pause
 Restart-Computer
