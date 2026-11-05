@@ -1,0 +1,6 @@
+{
+	"domainName": "corp.local",
+	"domainNetBIOSName": "CORP",
+	"forestMode": "Win2026",
+	"domainMode": "Win2026"
+}
