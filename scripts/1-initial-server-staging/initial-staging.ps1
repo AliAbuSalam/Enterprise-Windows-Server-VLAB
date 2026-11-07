@@ -1,3 +1,11 @@
+$ErrorActionPreference = 'Stop'
+
+#Checks whether the script is run with Admin Privileges
+$currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+if( -not $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)){
+  throw "The script needs to be run with Admin Privileges. The script will exit now."
+}
+
 $configFilePath = Join-Path -Path $PSScriptRoot -ChildPath "initial-staging-config.json"
 $configFile = Get-Content $configFilePath | ConvertFrom-Json
 
