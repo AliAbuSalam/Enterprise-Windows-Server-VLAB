@@ -32,3 +32,13 @@ Set-DNSClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses "127.0.0.
 Write-Host "The script has finished. The computer will restart to finalize change."
 Pause
 Restart-Computer
+
+trap {
+  Write-Host ""
+  Write-Host "Error Occured" -ForegroundColor Red
+  Write-Host "Error Message: $($_.Exception.Message)"
+  Write-Host "Script Line: $($_.InvocationInfo.ScriptLineNumber)"
+  Write-Host ""
+  Read-Host "Press Enter to Exit:"
+  exit 1
+}
