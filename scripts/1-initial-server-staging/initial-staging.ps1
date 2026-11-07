@@ -12,9 +12,7 @@ $configFile = Get-Content $configFilePath | ConvertFrom-Json
 #Checks whether the device has ethernet connection
 $ethernetInterfaces = Get-NetAdapter "Ethernet" -ErrorAction SilentlyContinue
 if($null -eq $ethernetInterfaces) {
-  Write-Error -Message "Can't detect any ethernet connection. Make sure the device has ethernet connection."
-  Pause
-  Return
+  throw "Can't detect any ethernet connection. Make sure the device has ethernet connection."
 }
 
 #renaming pc to $ConfigFile.Hostname
