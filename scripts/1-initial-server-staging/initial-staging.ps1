@@ -17,11 +17,15 @@ if($null -eq $ethernetInterfaces) {
 
 #Checks whether the current hostname is the same as hostname in configFile
 $currentHostName = $env:COMPUTERNAME
+$needToRestart = $false
 if($currentHostName -ne $configFile.Hostname){
   #renaming pc to $ConfigFile.Hostname
   $configFile.Hostname
   Rename-Computer $configFile.Hostname
+  $needToRestart = $true
   Write-Host "Renamed Hostname to $($configFile.Hostname)."
+} else {
+  Write-Host "Skipped changing Hostname. No need to change."
 }
 
 #Checks current ip address, prefix length, and default gateway
@@ -50,9 +54,12 @@ if($currentDefaultGateway.NextHop -ne $configFile.defaultGateway){
 
 #Set new DNSServer for the device
 Set-DNSClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses "127.0.0.1"
-Write-Host "The script has finished. The computer will restart to finalize change."
-Pause
-Restart-Computer
+if($needToRestart -eq $true){
+  Read-Host "The script has finished. The computer will restart to finalize change. Press enter to continue."
+  Restart-Computer
+} else {
+  Read-Host "The script has finished. Press Enter to continue."
+}
 
 trap {
   Write-Host ""
