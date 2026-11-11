@@ -13,8 +13,17 @@ The script being used on this chapter uses the value below as its default:
 {
 	"domainName": "corp.local",
 	"domainNetBIOSName": "CORP",
-	"forestMode": "Win2026",
-	"domainMode": "Win2026"
+	"forestMode": "WinThreshold",
+	"domainMode": "WinThreshold"
 }
 ```
+
 # 3. Procedure
+
+## Automated Server Installation Workflow
+The script for automating installation of the ADDS [`server-installation.ps1`](../../scripts/2-server-installation/) reads the config file [`server-installation-config.json`](../../scripts/2-server-installation/server-installation-config.json) stored in the same folder and performs the following action:
+1. Checks for Admin Privileges at the start of the script.
+2. Checks Whether ADDS Feature is able to be installed on the device. Install said feature if it is able to be installed, stop the script if it is not able to be installed, and skip the installation if it is already installed on the device.
+3. Checks whether the device can be promoted to be a Domain Controller of the new AD Forest. Skip the installation of ADDS Forest altogether if the device is already a Domain Controller, and throw an error to exit the script if the device is either not able to act as a Domain Controller or already a member of another AD Domain.
+4. Install the ADDS Forest according to the configuration file and promote the device to the primary Domain Controller of the new AD Domain.
+5. Restart the device once the script is finished.
