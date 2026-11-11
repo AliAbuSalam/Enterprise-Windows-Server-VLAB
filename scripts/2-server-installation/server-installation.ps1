@@ -1,3 +1,4 @@
+$ErrorActionPreference = 'Stop'
 $configFilePath = Join-Path -Path $PSScriptRoot -ChildPath "server-installation-config.json"
 $configFile = Get-Content $configFilePath | ConvertFrom-Json
 
