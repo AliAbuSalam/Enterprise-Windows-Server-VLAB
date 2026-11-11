@@ -26,7 +26,7 @@ The staging script [`initial-staging.ps1`](../scripts/1-initial-server-staging/i
 3. Checks whether the device has different hostname to the one listed in the config file. If so, rename the device to a name listed on the config file.
 4. Checks for current IP Address, prefix length, and default gateway and change them if there's any need to change according to the config file.
 5. Set DNS Server setting to itself using standard IPv4 loopback address
-6. Restart the device to apply changes for the new device's name
+6. Restart the device to apply changes for the new device's name if needed,
 7. If any Errors occur in the middle of the script, a custom error handler is going to handle it and terminate the script.
 
 ## Steps
