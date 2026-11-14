@@ -37,7 +37,7 @@ if($currentIPAddress.IPAddress -ne $configFile.IPAddress -or $currentIPAddress.P
   Remove-NetIPAddress $currentIPAddress -ErrorAction SilentlyContinue
   New-NetIPAddress -InterfaceAlias "Ethernet" `
     -IPAddress $configFile.IPAddress `
-    -PrefixLength $configFile.prefixLength `
+    -PrefixLength $configFile.prefixLength
   Write-Host "Changed IP Address to $($configFile.IPAddress)/$($configFile.prefixLength)."
 } else {
   Write-Host "Skipped changing IP Address and prefix length. No need to change. "
