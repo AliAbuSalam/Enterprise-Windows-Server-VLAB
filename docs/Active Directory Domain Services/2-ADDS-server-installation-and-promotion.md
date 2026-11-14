@@ -39,3 +39,7 @@ cd "C:\Path\to\your\script\2-server-installation"
 .\server-installation.ps1
 ```
 **Note:** If the script is blocked by execution policy, refer to the [Known issues & Troubleshooting](./1-ADDS-server-staging.md#4-known-issues--troubleshooting) in [`1-ADDS-server-staging`](1-ADDS-server-staging.md).
+4. A new password for the new AD Domain will be prompted later in the script. Enter and confirm a SafeModeAdministratorPassword.
+5. Wait for the script to finish and press enter when prompted to restart the device.
+
+# 4. Known Issues & Troubleshooting
