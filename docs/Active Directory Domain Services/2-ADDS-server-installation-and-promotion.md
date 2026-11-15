@@ -43,3 +43,21 @@ cd "C:\Path\to\your\script\2-server-installation"
 5. Wait for the script to finish and press enter when prompted to restart the device.
 
 # 4. Known Issues & Troubleshooting
+
+## 1. Crypthography Algorithm Compatibility Warning
+* **Symptoms:** While running the script, a warning will appear:
+```text
+WARNING: Windows Server 2022 domain controllers have a default for the security setting named "Allow cryptography algorithms compatible with Windows NT 4.0" that prevents weaker cryptography algorithms when establishing security channel sessions.
+```
+* **Root Cause:** During Domain Controller promotion, Windows will show the warning above informing that a setting called "Allow cryptography algorithm compatible with Windows NT 4.0" exist. This is a standard warning that shows on every Domain Controller promotion on Windows Server 2008 R2 and above.
+* **Resolution:** Safe to ignore. The setting is turned off by default. Turning on the setting may compromise the security of the Domain.
+
+## 2. DNS Delegation Warning During Domain Creation
+* **Symptoms:** While running the script, a warning will appear:
+```text
+WARNING: A delegation for this DNS Server cannot be created because the authoritative parent zone cannot be found or it does not run windows DNS server. If your are integrating with an existing DNS infrastructure, you should manually create a delegation to this DNS server in the parent zone to ensure reliable name resolution from outside the domain "yourdomainname.local". Otherwise, no action is required.
+```
+* **Root Cause:** During DNS server installation, Windows will check for the parent zone of the new AD Domain to create a delegation record for the new DNS. Windows will give the warning above if it cannot create the new delegation record for multiple reasons, such as:
+	- cannot find the parent zone for the newly created AD Domain.
+	- cannot create a delegation record because the parent zone isn't hosted on a Windows DNS.
+* **Resolution:** Safe to ignore. Since the newly created AD Domain is isolated from any other AD Domain, there wouldn't be any parent zone for the Domain.
