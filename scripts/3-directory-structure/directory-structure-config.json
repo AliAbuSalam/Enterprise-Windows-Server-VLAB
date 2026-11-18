@@ -1,0 +1,63 @@
+{
+  "domain": "corp.local",
+  "organizationalUnits": [
+    {
+      "name": "Corporate",
+      "child": [
+        {
+          "name": "Users",
+          "child": [
+            {
+              "name": "IT"
+            },
+            {
+              "name": "Finance"
+            },
+            { 
+              "name": "HR" 
+            }
+          ]
+        },
+        {
+          "name": "Workstations",
+          "child": [
+            {
+              "name": "Desktops"
+            },
+            {
+              "name": "Laptops"
+            }
+          ]
+        },
+        {
+          "name": "Servers",
+          "child": [
+            {
+              "name": "Application"
+            },
+            {
+              "name": "FilePrint"
+            }
+          ]
+        },
+        {
+          "name": "Groups",
+          "child": [
+            {
+              "name": "RoleGroups"
+            },
+            {
+              "name": "ResourceGroups"
+            }
+          ]
+        },
+        {
+          "name": "ServiceAccounts"
+        }
+      ]
+    },
+    {
+      "name": "Disabled"
+    }
+  ]
+}
