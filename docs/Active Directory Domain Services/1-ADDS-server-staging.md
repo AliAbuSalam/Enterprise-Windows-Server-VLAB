@@ -56,3 +56,7 @@ powershell.exe -ExecutionPolicy Bypass -File .\initial-staging.ps1
 ```powershell
 powershell.exe -ExecutionPolicy Bypass -File "\\VBoxSvr\location\of\the\shared\folders\initial-staging.ps1"
 ```
+Or you can bypass the execution policy for the current session by using:
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
+```
