@@ -54,4 +54,4 @@ $OUHashArray | ForEach-Object -Process {
   } else {
     Write-Host "Creation of $($params.Name) OU is skipped. Already exist."
   }
-} | Out-Host
+}
