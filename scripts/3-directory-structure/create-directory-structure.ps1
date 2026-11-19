@@ -5,6 +5,7 @@ $domain = ($configFile.domain.Split(".") | ForEach-Object {("DC=$($_)")}) -join 
 
 $OUTree = $configFile.organizationalUnits
 
+# Scan the config file to list the OUs to add
 function Get-OUListRecursive {
   param (
     [string]$Name,
@@ -34,5 +35,23 @@ function Get-OUListRecursive {
 }
 $OUList = @()
 $OUList = Get-OUListRecursive -PreviousPath $domain -ChildTrees $OUTree
-Write-Host "OUList result: "
-$OUList | Format-Table -AutoSize | Out-Host
+
+$OUHashArray = @(
+  $OUList | ForEach-Object -Process {
+    $currentHash = @{}
+    foreach($property in $_.PSObject.Properties){
+      $currentHash[$property.name] = $property.value
+    }
+    $currentHash
+  }
+)
+
+$OUHashArray | ForEach-Object -Process {
+  $params = $_
+  $existingOU = Get-ADOrganizationalUnit -Filter "Name -eq '$($params.Name)'" -SearchBase $params.Path -SearchScope OneLevel
+  if($null -eq $existingOU){
+    New-ADOrganizationalUnit @params
+  } else {
+    Write-Host "Creation of $($params.Name) OU is skipped. Already exist."
+  }
+} | Out-Host
