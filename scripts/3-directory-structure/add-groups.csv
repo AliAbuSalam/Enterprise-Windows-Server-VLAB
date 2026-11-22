@@ -1,0 +1,5 @@
+Name,GroupScope,GroupCategory,Path,SamAccountName,Description
+GRP-IT-ADMINS,Global,Security,"OU=RoleGroups,OU=Groups,OU=Corporate,DC=corp,DC=local",,"Role Groups for IT Admins"
+GRP-IT-STAFF,Global,Security,"OU=RoleGroups,OU=Groups,OU=Corporate,DC=corp,DC=local",,"Role Groups for IT Staff"
+GRP-FINANCE-STAFF,Global,Security,"OU=RoleGroups,OU=Groups,OU=Corporate,DC=corp,DC=local",,"Role Groups for Finance Staff"
+GRP-HR-STAFF,Global,Security,"OU=RoleGroups,OU=Groups,OU=Corporate,DC=corp,DC=local",,"Role Groups for HR Staff"
