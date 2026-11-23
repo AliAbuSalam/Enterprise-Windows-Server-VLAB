@@ -36,6 +36,7 @@ function Get-OUListRecursive {
 $OUList = @()
 $OUList = Get-OUListRecursive -PreviousPath $domain -ChildTrees $OUTree
 
+# convert Array of objects into Array of HashTables
 $OUHashArray = @(
   $OUList | ForEach-Object -Process {
     $currentHash = @{}
