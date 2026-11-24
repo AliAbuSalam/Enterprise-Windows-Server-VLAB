@@ -1,0 +1,4 @@
+GivenName,Surname,SamAccountName,Department,Title,Path,AccountPassword,ChangePasswordAtLogon,Enabled
+Budi,Santoso,budi.santoso,Finance,Accountant,"OU=Finance,OU=Users,OU=Corporate,DC=corp,DC=local",,True,True
+Agus,Setiawan,agus.setiawan,IT,Helpdesk Technician,"OU=IT,OU=Users,OU=Corporate,DC=corp,DC=local",pass123,True,True
+Rizky,Pratama,rizky.pratama,HR,HR Generalist,"OU=HR,OU=Users,OU=Corporate,DC=corp,DC=local",pass123,True,True
