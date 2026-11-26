@@ -1,6 +1,7 @@
 param(
   [securestring]$DefaultPassword,
-  [boolean]$UseDefaultPasswordFromConfig
+  [boolean]$UseDefaultPasswordFromConfig = $false,
+  [boolean]$SkipDefaultPassword
 )
 
 $ConfigFilePath = Join-Path -Path $PSscriptRoot -ChildPath "add-bulk-groups-and-users-config.json"
@@ -12,61 +13,23 @@ $UsersObjectArray = @(Import-Csv -Path $ConfigFile.usersCSV)
 $GroupsCount = $GroupsObjectArray.Count
 $UsersCount = $UsersObjectArray.Count
 
-if($usersCount -gt 0){
-  [securestring]$DefaultPasswordForUsers
-
-  # Define the minimum length of the default password
-  $MinLen = 0
-  $MinimumLength = if( # Make sure Minimum length of the default password is atleast 7. Feel free to change according to needs
-    $null -ne $ConfigFile.MinimumPasswordLength -and 
-    [int]::TryParse($ConfigFile.MinimumPasswordLength, [ref]$MinLen -and 
-    $MinLen -gt 7)
-  ) {
-    $MinLen
-  } else { 7 }
+function AssignDefaultPassword {
+  param(
+    [SecureString]$DefaultPass,
+    [String]$PassFromConfig,
+    [Int]$MinPassLength = 7
+  )
 
   # Define the source of default password
-  $DefaultPasswordFromConfigFileExist = $UserDefaultPasswordFromConfig -and $null -ne $ConfigFile.DefaultPassword
-  if($null -ne $DefaultPassword -and $DefaultPassword.Length -ge $MinimumLength){
-    $DefaultPasswordForUsers = $DefaultPassword
+  $DefaultPasswordFromConfigFileExist = $null -ne $PassFromConfig
+  if($null -ne $DefaultPass -and $DefaultPass.Length -ge $MinimumLength){
+    return $DefaultPass
   } elseif(
-      $DefaultPasswordFromConfigFileExist -and
-      $ConfigFile.DefaultPassword.length -ge $MinimumLength
+      $null -ne $PassFromConfig -and
+      $PassFromConfig.length -ge $MinimumLength
     ) {
-    $DefaultPasswordForUsers = $ConfigFile.DefaultPassword
-  } else {
-    function CheckPasswordValidity {
-      param(
-        [Parameter(Mandatory)]
-        [securestring]$Password,
-        [int]$MinimumLength
-      )
-      if($null -eq $password){
-        return $false
-      }
-      if($password.Length -lt $MinimumLength){
-        return $false
-      }
-      return $true
-    }
-
-    function PasswordPrompt {
-      $DefaultPassInput = Read-Host "Please enter default password: " -AsSecureString
-      $IsPasswordValid = CheckPasswordValidity -Password $DefaultPassInput -MinimumLength $MinimumLength
-      while(-not $IsPasswordValid){
-        Write-Warning "Password cannot be empty and need a minimum length of $MinimumLength."
-        $DefaultPassInput = Read-Host "Enter Password: " -AsSecureString
-        if($null -ne $DefaultPassInput){
-          $IsPasswordValid = CheckPasswordValidity -Password $DefaultPassInput -MinimumLength $MinimumLength
-        }
-      }
-      $DefaultPassConfirmation = Read-Host "Confirm your password: " -AsSecureString
-      return @{
-        PassInput = $DefaultPassInput
-        PassConfirm = $DefaultPassConfirmation
-      }
-    }
-
+    return ConvertTo-SecureString -String $PassFromConfig -AsPlainText -Force
+  } else {  
     if($DefaultPasswordFromConfigFileExist -and 
       $ConfigFile.DefaultPassword -lt $MinimumLength
     ){
@@ -81,10 +44,56 @@ if($usersCount -gt 0){
       $TempId2 = [PSCredential]::New('temp2', $PassObj.PassCOnfirm)
       if($TempId1.GetNetworkCredential().Password -ceq $TempId2.GetNetworkCredential().Password){
         $IsCredentialValid = $true
+        return $TempId1.GetNetworkCredential().Password
       } else {
         Write-Warning "The password you put in the first and second time is not the same. Please re-enter password."
       }
     }
+  }
+}
+function CheckPasswordValidity {
+  param(
+    [Parameter(Mandatory)]
+    [securestring]$Password,
+    [int]$MinimumLength
+  )
+  if($null -eq $password){
+    return $false
+  }
+  if($password.Length -lt $MinimumLength){
+    return $false
+  }
+  return $true
+}
+
+function PasswordPrompt {
+  $DefaultPassInput = Read-Host "Please enter default password: " -AsSecureString
+  $IsPasswordValid = CheckPasswordValidity -Password $DefaultPassInput -MinimumLength $MinimumLength
+  while(-not $IsPasswordValid){
+    Write-Warning "Password cannot be empty and need a minimum length of $MinimumLength."
+    $DefaultPassInput = Read-Host "Enter Password: " -AsSecureString
+    if($null -ne $DefaultPassInput){
+      $IsPasswordValid = CheckPasswordValidity -Password $DefaultPassInput -MinimumLength $MinimumLength
+    }
+  }
+  $DefaultPassConfirmation = Read-Host "Confirm your password: " -AsSecureString
+  return @{
+    PassInput = $DefaultPassInput
+    PassConfirm = $DefaultPassConfirmation
+  }
+}
+
+if($UsersCount -gt 0){
+  if($SkipDefaultPassword){
+    Write-Warning "Default password is skipped. Make sure every users have password set up."
+  } else {
+    $PassFromConfig = $null
+    if($UseDefaultPasswordFromConfig -and $ConfigFile.DefaultPassword -is [string]){
+      $PassFromConfig = $ConfigFile.DefaultPassword
+    }
+    [int]$MinLength
+    [int]::TryParse($ConfigFile.MinimumPasswordLength, [ref]$MinLength)
+    $DefaultPass = AssignDefaultPassword -DefaultPass $DefaultPassword -PassFromConfig $PassFromConfig -MinPassLength $MinLength
   }
 }
 
